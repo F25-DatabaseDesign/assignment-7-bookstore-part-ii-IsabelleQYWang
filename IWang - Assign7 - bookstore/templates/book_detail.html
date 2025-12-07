@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block container %}
+<main>
+    <section id="catLeft">
+        {% for category in categories %}
+            {% if category.id == book.categoryId %}
+                <p class='selectedCategory'>{{ category.name }}</p>
+            {% else %}
+                <p class='notSelectedCategory'>
+                    <a href='{{ url_for("category", categoryId=category.id) }}'>
+                        {{ category.name }}
+                    </a>
+                </p>
+            {% endif %}
+        {% endfor %}
+    </section>
+    <section id="catRight">
+        <div class="breadcrumb">
+            <a href="/">Home</a> → 
+            <a href="{{ url_for('category', categoryId=book.categoryId) }}">{{ book.categoryName }}</a> → 
+            {{ book.title }}
+        </div>
+        
+        <div class='book' style="margin-top: 2rem;">
+            <div>
+                <img
+                    src='{{ url_for("static", filename="images/books/" ~ book.image) }}'
+                    alt='{{ book.title }} cover'
+                    style="max-width: 300px;"
+                />
+                {% if book.readNow == 1 %}
+                    <p class="bookDetail" style="margin-top: 1rem; color: #d32f2f; font-weight: bold;">
+                        ⚡ Read Now Available
+                    </p>
+                {% endif %}
+            </div>
+            <div class='bookDetailBox'>
+                <p class='bookTitle' style="font-size: 2rem;">{{ book.title }}</p>
+                <p class='bookDetail' style="font-size: 1.2rem; margin: 1rem 0;"><strong>Author:</strong> {{ book.author }}</p>
+                <p class='bookDetail'><strong>Category:</strong> 
+                    <a href="{{ url_for('category', categoryId=book.categoryId) }}">{{ book.categoryName }}</a>
+                </p>
+                <p class='bookDetail'><strong>ISBN:</strong> {{ book.isbn }}</p>
+                <p class='bookPrice' style="font-size: 2rem; margin: 1.5rem 0;">${{ '%.2f'|format(book.price) }}</p>
+                
+                <div style="margin: 2rem 0;">
+                    <form method="post" action="{{ url_for('add_to_cart', bookId=book.id) }}" style="display: inline;">
+                        <button type="submit" class='actionButton' style="padding: 1rem 2rem; font-size: 1.1rem;">Add to cart</button>
+                    </form>
+                    {% if book.readNow == 1 %}
+                        <a class='actionButton' href='#' style="padding: 1rem 2rem; font-size: 1.1rem;">Read Now</a>
+                    {% endif %}
+                </div>
+                
+                <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #ddd;">
+                    <a href="{{ url_for('category', categoryId=book.categoryId) }}" class="bookDetail">
+                        ← Back to {{ book.categoryName }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

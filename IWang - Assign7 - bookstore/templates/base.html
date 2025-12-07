@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Isabelle's Detective Bookstore</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/main.css') }}"
+    />
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon" />
+  </head>
+  <body>
+    <header>
+      <div id="leftHeader">
+        <a href="{{ url_for('home') }}">
+          <img
+            src="{{ url_for('static', filename='images/misc/logo.png') }}"
+            alt="Isabelle's Detective Bookstore logo"
+          />
+        </a>
+        <div>
+          <h1>Isabelle's Detective Bookstore</h1>
+          <p>Your source for classic cases &amp; noir intrigue</p>
+        </div>
+      </div>
+      <div id="midHeader">
+        <form id="searchBoxForm" action="{{ url_for('search') }}" method="post">
+          <input
+            id="searchBox"
+            type="text"
+            placeholder="Search classic titles"
+            name="search"
+          />
+          <button id="searchButton" type="submit">
+            <img
+              src="{{ url_for('static', filename='images/misc/search-icon.png') }}"
+              alt="Search"
+              class="searchIcon"
+            />
+          </button>
+        </form>
+        <div class="dropdown">
+          <p class="dropdownSelect">Browse Categories</p>
+          <div class="dropdownContent">
+            {% for category in categories %}
+            <p>
+              <a href="{{ url_for('category', categoryId=category.id) }}">
+                {{ category.name }}
+              </a>
+            </p>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div id="rightHeader">
+        <div id="cartContainer">
+          <img
+            src="{{ url_for('static', filename='images/misc/cart-icon.jpg') }}"
+            alt="Shopping cart"
+            class="headerCartIcon"
+          />
+          <span id="cartCount">{{ cart_count|default(0) }}</span>
+        </div>
+        <p>Est. 2025 • Classic Detective Fiction Only</p>
+      </div>
+    </header>
+    <main>{% block container %} {% endblock %}</main>
+    <footer>
+      <div id="footerLeft">
+        <p>&copy; 2025 Isabelle's Detective Bookstore</p>
+        <a href="mailto:isabellewang@nyu.edu">Contact Us</a>
+        <a href="#">Directions</a>
+      </div>
+      <div id="footerRight">
+        <span>Follow our sleuthing adventures.</span>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block container %}
+<main>
+    <section id="catLeft">
+        {% for category in categories %}
+            {% if category.id == selectedCategory %}
+                <p class='selectedCategory'>{{ category.name }}</p>
+            {% else %}
+                <p class='notSelectedCategory'>
+                    <a href='{{ url_for("category", categoryId=category.id) }}'>
+                        {{ category.name }}
+                    </a>
+                </p>
+            {% endif %}
+        {% endfor %}
+    </section>
+    <section id="catRight">
+        {% if selectedCategoryDetails %}
+            <h2>{{ selectedCategoryDetails.name }}</h2>
+            <p class="bookDetail">{{ selectedCategoryDetails.blurb }}</p>
+        {% endif %}
+        {% for book in books %}
+            <div class='book'>
+                <div>
+                    <img
+                        src='{{ url_for("static", filename="images/books/" ~ book.image) }}'
+                        alt='{{ book.title }} cover'
+                    />
+                </div>
+                <div class='bookDetailBox'>
+                    <p class='bookTitle'>{{ book.title }}</p>
+                    <p class='bookDetail'>by {{ book.author }}</p>
+                    <p class='bookDetail'>ISBN: {{ book.isbn }}</p>
+                    <p class='bookPrice'>${{ '%.2f'|format(book.price) }}</p>
+                    <form method="post" action="{{ url_for('add_to_cart', bookId=book.id) }}" style="display: inline;">
+                        <button type="submit" class='actionButton'>Add to cart</button>
+                    </form>
+                    <a class='actionButton' href='{{ url_for("book_detail", book_id=book.id) }}'>View Details</a>
+                    {% if book.readNow %}
+                        <a class='actionButton' href='#'>Read Now</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% else %}
+            <p class="bookDetail">Check back soon for new mysteries in this category.</p>
+        {% endfor %}
+    </section>
+</main>
+{% endblock %}

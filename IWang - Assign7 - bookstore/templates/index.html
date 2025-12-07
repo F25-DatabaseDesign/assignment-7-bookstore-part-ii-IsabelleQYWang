@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block container %}
+<main>
+    <div id="mainLeft">
+        <h1 class="welcomeText">Classic Detective Fiction, Curated</h1>
+        <p class="welcomeText">
+            Isabelle's Detective Bookstore specializes in the most beloved sleuths
+            from the golden age of mystery fiction. 
+        </p>
+        <p class="welcomeText">
+            Browse our investigations by category, explore original cover art, and keep
+            your magnifying glass handy since these clues won't solve themselves.
+        </p>
+    </div>
+    <div id='mainRight'>
+        <h1>Shop by category:</h1>
+        <div id='categorySelections'>
+            {% for category in categories %}
+                <div class='category'>
+                    <p>
+                        <a href="{{ url_for('category', categoryId=category.id) }}">
+                            {{ category.name }}
+                        </a>
+                    </p>
+                    <a href="{{ url_for('category', categoryId=category.id) }}">
+                        <img
+                            src="{{ url_for('static', filename='images/categories/' ~ category.image) }}"
+                            alt="{{ category.name }} cover"
+                        />
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+{% endblock %}
